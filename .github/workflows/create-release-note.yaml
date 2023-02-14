@@ -48,8 +48,7 @@ jobs:
       - name: Add Comment
         uses: thollander/actions-comment-pull-request@v2
         with:
+          comment_tag: execution
           message: |
-            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
             リリースノートのDraftを作成しました。内容の確認をお願いします。
             https://github.com/${{ github.repository }}/releases/
-          comment_tag: execution
