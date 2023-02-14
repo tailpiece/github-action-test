@@ -11,7 +11,7 @@ jobs:
   create-release-tag:
     # topic or hotfixブランチの場合で、approvedされた場合のみ実行
     if: >-
-      (startsWith(github.event.pull_request.head.ref, 'topic/') || startsWith(github.event.pull_request.head.ref, 'hotfix/')) &&
+      (startsWith(github.event.pull_request.head.ref, 'topic/') || startsWith(github.event.pull_request.head.ref, 'fix/')) &&
       startsWith(github.event.pull_request.base.ref, 'main') &&
       github.event.review.state == 'approved'
     permissions:
