@@ -1,0 +1,31 @@
+name-template: 'v$RESOLVED_VERSION アップデート'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '変更点 ✨'
+    labels:
+      - '✨ Type: Feature'
+  - title: '修正点 🛠'
+    labels:
+      - '🛠 Type: Fix'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
+autolabeler:
+  - label: '✨ Type: Feature'
+    branch:
+      - '/feature\/.+/'
+  - label: '🛠 Type: Fix'
+    branch:
+      - '/fix\/.+/'
+template: |
+  $CHANGES
