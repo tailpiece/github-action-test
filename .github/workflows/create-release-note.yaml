@@ -25,9 +25,10 @@ jobs:
 
       - name: Show param
         run: |
-          echo "${{ github.event.pull_request.head.ref }}"
-          echo "${{ github.event.pull_request.base.ref }}"
-          echo "${{ github.event.review.state }}"
+          echo "head: ${{ github.event.pull_request.head.ref }}"
+          echo "base: ${{ github.event.pull_request.base.ref }}"
+          echo "state: ${{ github.event.review.state }}"
+          echo "repository: ${{github.repository}}"
 
       # package.jsonのversionを取得する
       - name: Read package.json
