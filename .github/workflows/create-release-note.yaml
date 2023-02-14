@@ -23,16 +23,18 @@ jobs:
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
 
+      # package.jsonのversionを取得する
+      - name: Read package.json
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+
       - name: Show param
         run: |
           echo "head: ${{ github.event.pull_request.head.ref }}"
           echo "base: ${{ github.event.pull_request.base.ref }}"
           echo "state: ${{ github.event.review.state }}"
+          echo "version: v${{ steps.package-version.outputs.current-version }}"
 
-      # package.jsonのversionを取得する
-      - name: Read package.json
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
 
       # Drafts your next Release notes as Pull Requests are merged into "master"
       - uses: release-drafter/release-drafter@v5
@@ -47,6 +49,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
+            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
             リリースノートのDraftを作成しました。内容の確認をお願いします。
             https://github.com/${{ github.repository }}/releases/
           comment_tag: execution
