@@ -49,3 +49,4 @@ jobs:
           message: |
             リリースノートのDraftを作成しました。内容の確認をお願いします。
             https://github.com/${{ github.repository }}/releases/
+          comment_tag: execution
