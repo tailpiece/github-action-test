@@ -1,0 +1,52 @@
+name: Create release tag and release note.
+
+on:
+  pull_request_review:
+    types: [ submitted ]
+
+permissions:
+  contents: read
+
+jobs:
+  create-release-tag:
+    # topic or hotfixブランチからrelease/productionの場合で、approvedされた場合のみ実行
+    # if: >-
+    #   (startsWith(github.head_ref, 'topic/') || startsWith(github.head_ref, 'hotfix/')) &&
+    #   startsWith(github.base_ref, 'release/production') &&
+    #   github.event.review.state == 'approved'
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+
+      - name: Show param
+        run: echo "${{ github.head_ref }}"
+        run: echo "${{ github.base_ref }}"
+        run: echo "${{ github.event.review.state }}"
+        run: echo "${{ github }}"
+
+      # package.jsonのversionを取得する
+      - name: Read package.json
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+
+      # Drafts your next Release notes as Pull Requests are merged into "master"
+      - uses: release-drafter/release-drafter@v5
+        with:
+          commitish: ${{ github.base_ref }}
+          version: v${{ steps.package-version.outputs.current-version }}
+          tag: v${{ steps.package-version.outputs.current-version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add Comment
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            @${{ github.actor }}
+            リリースノートのDraftを作成しました。内容の確認をお願いします。
+            https://github.com/${{ github.repository }}/releases/
