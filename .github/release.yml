@@ -1,0 +1,16 @@
+# .github/release.yml
+
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release-note
+  categories:
+    - title: 変更点 ✨
+      labels:
+        - "✨ Type: Feature"
+    - title: 修正点 🛠
+      labels:
+        - "🛠 Type: Fix"
+    - title: その他
+      labels:
+        - "*"
